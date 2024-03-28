@@ -32,9 +32,9 @@ class Command(BaseCommand):
 
         # Создание новых записей товаров
         product_list = [
-            {"title": "cucumber", "category_id": 25, "price": "150"},
-            {"title": "pork", "category_id": 26, "price": "200"},
-            {"title": "twix", "category_id": 27, "price": "60"},
+            {"title": "cucumber", "description": "oshibka", "price": "150"},
+            {"title": "pork", "description": "tvoei", "price": "200"},
+            {"title": "twix", "description": "jizni", "price": "60"},
         ]
         product_to_create = [Product(**item) for item in product_list]
         Product.objects.bulk_create(product_to_create)
