@@ -51,3 +51,18 @@ class Contact(models.Model):
     class Meta:
         verbose_name = 'Контакт'
         verbose_name_plural = 'Контакты'
+
+class Contact(models.Model):
+    name = models.CharField(max_length=40, verbose_name="Название компании", **NULLABLE)
+    phone = models.CharField(max_length=20, verbose_name='Телефон', **NULLABLE)
+    email = models.CharField(max_length=200, verbose_name='Имейл', **NULLABLE)
+    address = models.TextField(verbose_name='Адрес', **NULLABLE)
+    ind_number = models.CharField(max_length=30, verbose_name='ИНН', **NULLABLE)
+
+    def __str__(self):
+        # Строковое отображение объекта
+        return f"{self.name}: {self.phone}, {self.email}, {self.address}, {self.ind_number}"
+
+    class Meta:
+        verbose_name = 'Контакт'
+        verbose_name_plural = 'Контакты'
