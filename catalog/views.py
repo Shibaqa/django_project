@@ -85,7 +85,7 @@ class ProductUpdateView(UpdateView):
 
 class ProductDetailView(DetailView):
     model = Product
-    template_name = 'catalog/product_list.html'
+    template_name = 'catalog/product_detail.html'
     extra_context = {
         'title': 'Детальная информация о товаре'
     }
@@ -108,7 +108,7 @@ class ProductDeleteView(DeleteView):
 #         'prod_to_display': one_product,
 #         'title': 'Детальная информация о товаре'
 #     }
-#     return render(request, "catalog/product_list.html", content)
+#     return render(request, "catalog/product_detail1.html", content)
 
 
 # class ProductsCreateView(CreateView):
