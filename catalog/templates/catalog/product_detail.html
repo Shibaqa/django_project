@@ -1,33 +1,15 @@
 {% extends 'catalog/base.html' %}
-{% load my_tags %}
+
 {% block content %}
-  {% for prod in prod_to_display %}
-  <div class="container">
-      <div class="card-deck mb-3 text-center">
-        <div class="card mb-4 box-shadow">
-          <div class="card-header">
-            <h4 class="my-0 font-weight-normal">{{ prod.name }}</h4>
-          </div>
-          <img class="card-img-top"
-               src="{{ prod.item_pic|mymedia }}"
-               width="10"
-               height="300"
-               alt="Card image cap">
-          <div class="card-body">
-            <h1 class="card-title pricing-card-title">{{ prod.item_price }} </h1>
-            <ul class="list-unstyled mt-3 mb-4">
-
-              <li>Категория {{ prod.category }}</li>
-              <p class="lead">Описание товара {{ prod.description }}</p>
-              <li>Введен в продажу {{ prod.created_date }}</li>
-              <li>Информация обновлена {{ prod.last_edited_date }}</li>
-
-            </ul>
-            <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
-          </div>
-        </div>
-      </div>
-     </div>
-{% endfor %}
-
+{% load my_tags %}
+<div class="card" style="width: 20rem;">
+    <img src="{{ object.preview|mymedia }}" class="card-img-top" alt="Изображение отсутствует">
+    <div class="card-body">
+        <h5 class="card-title">{{ object.name }}, {{ object.price | floatformat:2 }} руб</h5>
+        <p class="card-text">{{ object.description|slice:100 }}.</p>
+        <p class="card-text"> Актуальная версия {{ object.active_version }}.</p>
+        <span class="text-muted">{{ object.owner|default:"-" }}</span><br>
+        <a href="#" class="btn btn-primary">Купить</a>
+    </div>
+</div>
 {% endblock %}
