@@ -22,11 +22,6 @@
                     <a href="{% url 'blog:post_delete' object.pk %}"
                         type="button" class="btn btn-sm btn-outline-secondary">Удалить</a>
                 </div>
-                 {% if object.is_published %}
-                    <a class="btn btn-warning" href="{% url 'blog:published_toggle' object.pk %}">Снять с публикации</a>
-                {% else %}
-                    <a class="btn btn-success" href="{% url 'blog:published_toggle' object.pk %}">Опубликовать</a>
-                {% endif %}
             </div>
         </div>
     </div>

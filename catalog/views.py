@@ -5,13 +5,6 @@ from pytils.translit import slugify
 
 from catalog.models import Product, Contact
 
-# class ProductListView(ListView):
-#     model = Product
-#     template_name = 'catalog/home.html'
-#     extra_context = {
-#         'title': 'Best Store Ever'
-#     }
-
 
 class HomeView(TemplateView):
     template_name = 'catalog/home.html'
@@ -23,15 +16,6 @@ class HomeView(TemplateView):
         all_products = Product.objects.all()
         context_data['prod_to_display'] = all_products
         return context_data
-
-def home(request):
-    all_products = Product.objects.all()
-    content = {
-        'prod_to_display': all_products,
-        'title': 'Best Store Ever'
-    }
-    return render(request, "catalog/home.html", content)
-
 
 
 def contacts(request):
@@ -66,7 +50,7 @@ class ProductListView(ListView):
 class ProductCreateView(CreateView):
     model = Product
     fields = ('name', 'description',)
-    success_url = reverse_lazy('catalog:home')
+    success_url = reverse_lazy('catalog:home.html')
 
     def form_valid(self, form):
         if form.is_valid():
@@ -79,9 +63,21 @@ class ProductCreateView(CreateView):
 class ProductUpdateView(UpdateView):
     model = Product
     fields = ('name', 'description',)
-    success_url = reverse_lazy('catalog:home')
+    success_url = reverse_lazy('catalog:home.html')
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
+    def form_valid(self, form):
+        if form.is_valid():
+            new_blog = form.save()
+            new_blog.slug = slugify(new_blog.title)
+            new_blog.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('catalog:home.html', kwargs={'pk': self.object.pk})
 
 class ProductDetailView(DetailView):
     model = Product
@@ -89,6 +85,13 @@ class ProductDetailView(DetailView):
     extra_context = {
         'title': 'Детальная информация о товаре'
     }
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        product_item = self.get_object()
+        context['blogpost_item'] = product_item
+        context['title'] = 'Детальная информация о товаре'
+        return context
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
@@ -99,62 +102,8 @@ class ProductDetailView(DetailView):
 
 class ProductDeleteView(DeleteView):
     model = Product
-    success_url = reverse_lazy('catalog:home')
+    success_url = reverse_lazy('catalog:home.html')
 
-
-# def product_detail(request, pk):
-#     one_product = Product.objects.filter(id=pk)
-#     content = {
-#         'prod_to_display': one_product,
-#         'title': 'Детальная информация о товаре'
-#     }
-#     return render(request, "catalog/product_detail1.html", content)
-
-
-# class ProductsCreateView(CreateView):
-#     """
-#     класс контроллер приложения каталог
-#     шаблон форма добавить продукт
-#     """
-#     model = Product
-#     fields = ('product_name', 'product_description', 'product_image', 'product_category', 'product_price')
-#     success_url = reverse_lazy('catalog:list')
-#
-#
-# class ProductsListView(ListView):
-#     """
-#     Класс контроллер приложения каталог
-#     шаблон продукты
-#     """
-#     model = Product
-#     template_name = 'catalog/products_list.html'
-#
-#
-# class ProductsDetailView(DetailView):
-#     """
-#     Класс контроллер приложения каталог
-#     шаблон продукта
-#     """
-#     model = Product
-#     template_name = 'catalog/products_detail.html'
-#
-# class ProductsUpdateView(UpdateView):
-#     """
-#     класс контроллер приложения каталог
-#     шаблон форма изменить продукт
-#     """
-#     model = Product
-#     fields = ('product_name', 'product_description', 'product_image', 'product_category', 'product_price')
-#     success_url = reverse_lazy('catalog:list')
-#
-#     def get_success_url(self):
-#         return reverse('products:detail', args=[self.kwargs.get('pk')])
-#
-#
-# class ProductsDeleteView(DeleteView):
-#     """
-#     класс контроллер приложения каталог
-#     шаблон форма удалить продукт
-#     """
-#     model = Product
-#     success_url = reverse_lazy('catalog:list')
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context

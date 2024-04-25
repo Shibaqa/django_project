@@ -1,37 +1,15 @@
 {% extends 'catalog/base.html' %}
 
-
 {% block content %}
-<div class="col-12 mb-5">
-    <a class="btn btn-outline-primary" href="{% url 'catalog:product_create' %}">Добавить продукт</a>
-</div>
-{% for object in object_list %}
-<div class="col-md-4">
-    <div class="card mb-4 box-shadow">
-        <div class="card-body">
-            <p class="card-text">{{ object.name }}</p>
-            <p class="card-text"> Актуальная версия {{ object.active_version }}.</p>
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                    <a href="{% url 'catalog:product_detail' object.pk %}" class="btn btn-secondary">Показать</a>
-                    {% if user.is_verified %}
-                        <a href="{% url 'catalog:product_update' object.pk %}" class="btn btn-link">Изменить</a>
-                        <a href="{% url 'catalog:product_delete' object.pk%}" class="btn btn-danger">Удалить</a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        <div class="card-footer">
-            {% if perms.catalog.set_is_published %}
-                {% if object.is_published %}
-                    <a class="btn btn-outline-warning" href="{% url 'catalog:published_toggle' object.pk %}">Снять с публикации</a>
-                {% else %}
-                    <a class="btn btn-outline-success" href="{% url 'catalog:published_toggle' object.pk %}">Опубликовать</a>
-                {% endif %}
-            {% endif %}
-        </div>
+{% load my_tags %}
+<div class="card" style="width: 20rem;">
+    <img src="{{ object.preview|mymedia }}" class="card-img-top" alt="Изображение отсутствует">
+    <div class="card-body">
+        <h5 class="card-title">{{ object.name }}, {{ object.price | floatformat:2 }} руб</h5>
+        <p class="card-text">{{ object.description|slice:100 }}.</p>
+        <p class="card-text"> Актуальная версия {{ object.active_version }}.</p>
+        <span class="text-muted">{{ object.owner|default:"-" }}</span><br>
+        <a href="#" class="btn btn-primary">Купить</a>
     </div>
 </div>
-{% endfor %}
-
 {% endblock %}
