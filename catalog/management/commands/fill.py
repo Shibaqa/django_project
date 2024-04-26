@@ -1,5 +1,3 @@
-
-
 from django.core.management import BaseCommand
 from django.db import connection
 from catalog.models import Category, Product
@@ -28,16 +26,19 @@ class Command(BaseCommand):
         vegetable = Category.objects.get(name="Овощи")
         fruit = Category.objects.get(name="Фрукты")
         drink = Category.objects.get(name="Напитки")
-        grocery =Category.objects.get(name="Бакалея")
+        grocery = Category.objects.get(name="Бакалея")
 
         product_list = [
             {'name': 'Яблоки', 'description': 'ГренниСмит, 1 кг', 'item_pic': '', 'category': fruit, 'item_price': 150},
             {'name': 'Апельсины', 'description': 'Сочные, 1 кг', 'item_pic': '', 'category': fruit, 'item_price': 150},
-            {'name': 'Помидоры', 'description': 'Фламенко, 1 кг', 'item_pic': '', 'category': vegetable, 'item_price': 300},
-            {'name': 'Огурцы', 'description': 'Колючие короткоплодные, 1 кг', 'item_pic': '', 'category': vegetable, 'item_price': 200},
+            {'name': 'Помидоры', 'description': 'Фламенко, 1 кг', 'item_pic': '', 'category': vegetable,
+             'item_price': 300},
+            {'name': 'Огурцы', 'description': 'Колючие короткоплодные, 1 кг', 'item_pic': '', 'category': vegetable,
+             'item_price': 200},
             {'name': 'Вода', 'description': 'Газированая, 1 шт', 'item_pic': '', 'category': drink, 'item_price': 40},
             {'name': 'Сок', 'description': 'Вишневый 1 шт', 'item_pic': '', 'category': drink, 'item_price': 150},
-            {'name': 'Печенье', 'description': 'Овсяное с изюмом, 1 уп', 'item_pic': '', 'category': grocery, 'item_price': 100},
+            {'name': 'Печенье', 'description': 'Овсяное с изюмом, 1 уп', 'item_pic': '', 'category': grocery,
+             'item_price': 100},
             {'name': 'Зефир', 'description': 'В шоколаде, 1 уп', 'item_pic': '', 'category': grocery, 'item_price': 150}
         ]
 
