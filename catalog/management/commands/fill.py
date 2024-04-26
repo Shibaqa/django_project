@@ -1,75 +1,47 @@
-# """Модуль для очистки и заполнения базы данных тестовыми товарами и категориями"""
-# from django.core.management import BaseCommand
-# from catalog.models import Product, Category
-#
-#
-# class Command(BaseCommand):
-#     """
-#     Команда для очистки и заполнения базы данных тестовыми товарами и категориями.
-#
-#     Методы
-#     -------
-#     handle(self, *args, **options)
-#         Очищает таблицы Product и Category, создает новые записи категорий и товаров.
-#     """
-#
-#     def handle(self, *args, **options):
-#         """
-#         Очищает таблицы Product и Category, создает новые записи категорий и товаров.
-#         """
-#         # Очистка таблиц Product и Category
-#         Product.objects.all().delete()
-#         Category.objects.all().delete()
-#
-#         # Создание новых записей категорий
-#         category_list = [
-#             {"title": "vegetables", "description": "plants", },
-#             {"title": "meat", "description": "animals", },
-#             {"title": "chocolate", "description": "sweet food", },
-#         ]
-#         category_to_create = [Category(**item) for item in category_list]
-#         Category.objects.bulk_create(category_to_create)
-#
-#         # Создание новых записей товаров
-#         product_list = [
-#             {"title": "cucumber", "description": "oshibka", "price": "150"},
-#             {"title": "pork", "description": "tvoei", "price": "200"},
-#             {"title": "twix", "description": "jizni", "price": "60"},
-#         ]
-#         product_to_create = [Product(**item) for item in product_list]
-#         Product.objects.bulk_create(product_to_create)
+
 
 from django.core.management import BaseCommand
-import json
-from catalog.models import Category, Product
 from django.db import connection
+from catalog.models import Category, Product
+
 
 class Command(BaseCommand):
 
-    def handle(self, *args, **kwargs):
-        with connection.cursor() as cursor:
-            cursor.execute(f'TRUNCATE TABLE catalog_category RESTART IDENTITY CASCADE;')
-
-
+    def handle(self, *args, **options):
         Category.objects.all().delete()
         Product.objects.all().delete()
+        with connection.cursor() as cursor:
+            cursor.execute("ALTER SEQUENCE catalog_category_id_seq RESTART WITH 1;")
+            cursor.execute("ALTER SEQUENCE catalog_product_id_seq RESTART WITH 1;")
 
-        with open('data.json', encoding='utf-8') as json_file:
-            data = json.load(json_file)
+        category_list = [
+            {'name': 'Фрукты'},
+            {'name': 'Овощи'},
+            {'name': 'Напитки'},
+            {'name': 'Бакалея'}
+        ]
+        categories_for_create = []
+        for cat in category_list:
+            categories_for_create.append(Category(**cat))
+        Category.objects.bulk_create(categories_for_create)
 
-            product_for_create = []
-            category_for_create = []
+        vegetable = Category.objects.get(name="Овощи")
+        fruit = Category.objects.get(name="Фрукты")
+        drink = Category.objects.get(name="Напитки")
+        grocery =Category.objects.get(name="Бакалея")
 
-            for category in data:
-                if category["model"] == "catalog.category":
-                    category_for_create.append(Category(category_name=category["fields"]['category_name'],
-                                                        category_description=category["fields"]['category_description']))
-            Category.objects.bulk_create(category_for_create)
-            for product in data:
-                if product["model"] == "catalog.product":
-                    product_for_create.append(Product(product_name=product["fields"]['product_name'],
-                                                      description=product["fields"]['description'],
-                                                      category=Category.objects.get(pk=product["fields"]['category']),
-                                                      price=product["fields"]['price']))
+        product_list = [
+            {'name': 'Яблоки', 'description': 'ГренниСмит, 1 кг', 'item_pic': '', 'category': fruit, 'item_price': 150},
+            {'name': 'Апельсины', 'description': 'Сочные, 1 кг', 'item_pic': '', 'category': fruit, 'item_price': 150},
+            {'name': 'Помидоры', 'description': 'Фламенко, 1 кг', 'item_pic': '', 'category': vegetable, 'item_price': 300},
+            {'name': 'Огурцы', 'description': 'Колючие короткоплодные, 1 кг', 'item_pic': '', 'category': vegetable, 'item_price': 200},
+            {'name': 'Вода', 'description': 'Газированая, 1 шт', 'item_pic': '', 'category': drink, 'item_price': 40},
+            {'name': 'Сок', 'description': 'Вишневый 1 шт', 'item_pic': '', 'category': drink, 'item_price': 150},
+            {'name': 'Печенье', 'description': 'Овсяное с изюмом, 1 уп', 'item_pic': '', 'category': grocery, 'item_price': 100},
+            {'name': 'Зефир', 'description': 'В шоколаде, 1 уп', 'item_pic': '', 'category': grocery, 'item_price': 150}
+        ]
 
-            Product.objects.bulk_create(product_for_create)
+        products_for_create = []
+        for prod in product_list:
+            products_for_create.append(Product(**prod))
+        Product.objects.bulk_create(products_for_create)

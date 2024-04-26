@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('catalog', '0001_initial'),
     ]
@@ -14,12 +13,14 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='product',
             name='category',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='catalog.category', verbose_name='Категория'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    to='catalog.category', verbose_name='Категория'),
         ),
         migrations.AlterField(
             model_name='product',
             name='item_price',
-            field=models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True, verbose_name='Цена за единицу товара'),
+            field=models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True,
+                                      verbose_name='Цена за единицу товара'),
         ),
         migrations.AlterField(
             model_name='product',

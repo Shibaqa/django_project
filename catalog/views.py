@@ -1,6 +1,6 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.shortcuts import render
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from pytils.translit import slugify
 
 from catalog.models import Product, Contact
@@ -11,6 +11,7 @@ class HomeView(TemplateView):
     extra_context = {
         'title': 'Best Store Ever'
     }
+
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         all_products = Product.objects.all()
@@ -31,8 +32,10 @@ def contacts(request):
         print(f"{name} ({phone}): {message}")
     return render(request, "catalog/contacts.html", info_content)
 
+
 class ProductListView(ListView):
     model = Product
+
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(category_id=self.kwargs.get('pk'))
@@ -43,9 +46,10 @@ class ProductListView(ListView):
 
         one_product = Product.objects.filter(id=self.kwargs.get('pk'))
         context_data['prod_to_display'] = one_product,
-        context_data['title'] ='Детальная информация о товаре'
+        context_data['title'] = 'Детальная информация о товаре'
 
         return context_data
+
 
 class ProductCreateView(CreateView):
     model = Product
@@ -79,12 +83,17 @@ class ProductUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('catalog:home.html', kwargs={'pk': self.object.pk})
 
+
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'catalog/product_detail.html'
     extra_context = {
         'title': 'Детальная информация о товаре'
     }
+
+    def __init__(self, **kwargs):
+        super().__init__(kwargs)
+        self.object = None
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
