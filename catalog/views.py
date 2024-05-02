@@ -1,9 +1,11 @@
+from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from pytils.translit import slugify
 
-from catalog.models import Product, Contact
+from catalog.forms import ProductForm, VersionForm
+from catalog.models import Product, Contact, Version
 
 
 class HomeView(TemplateView):
@@ -53,8 +55,8 @@ class ProductListView(ListView):
 
 class ProductCreateView(CreateView):
     model = Product
-    fields = ('name', 'description',)
-    success_url = reverse_lazy('catalog:home.html')
+    form_class = ProductForm
+    success_url = reverse_lazy('catalog:home')
 
     def form_valid(self, form):
         if form.is_valid():
@@ -66,22 +68,26 @@ class ProductCreateView(CreateView):
 
 class ProductUpdateView(UpdateView):
     model = Product
-    fields = ('name', 'description',)
-    success_url = reverse_lazy('catalog:home.html')
+    form_class = ProductForm
+    success_url = reverse_lazy('catalog:home')
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        version_formset = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
+        if self.request.method == 'POST':
+            context_data['formset'] = version_formset(self.request.POST, instance=self.object)
+        else:
+            context_data['formset'] = version_formset(instance=self.object)
+        return context_data
 
     def form_valid(self, form):
-        if form.is_valid():
-            new_blog = form.save()
-            new_blog.slug = slugify(new_blog.title)
-            new_blog.save()
+        formset = self.get_context_data()['formset']
+        self.object = form.save()
+        if formset.is_valid():
+            formset.instance = self.object
+            formset.save()
         return super().form_valid(form)
 
-    def get_success_url(self):
-        return reverse_lazy('catalog:home.html', kwargs={'pk': self.object.pk})
 
 
 class ProductDetailView(DetailView):
