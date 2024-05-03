@@ -89,17 +89,12 @@ class ProductUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'catalog/product_detail.html'
     extra_context = {
         'title': 'Детальная информация о товаре'
     }
-
-    def __init__(self, **kwargs):
-        super().__init__(kwargs)
-        self.object = None
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
