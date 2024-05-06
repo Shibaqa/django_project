@@ -3,22 +3,156 @@
     "model": "catalog.category",
     "pk": 1,
     "fields": {
-      "category_name": "111",
-      "category_description": "qqqqqqqqqqqqqqqqqq"
+      "name": "Фрукты",
+      "description": null
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "name": "Овощи",
+      "description": null
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+      "name": "Напитки",
+      "description": null
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 4,
+    "fields": {
+      "name": "Бакалея",
+      "description": null
     }
   },
   {
     "model": "catalog.product",
     "pk": 1,
     "fields": {
-      "product_name": "2222222",
-      "description": "wwwwwwwwwwwwwwwwwwwww",
-      "preview": "",
+      "name": "яблоки",
+      "description": "греннисмит, 5 кг",
+      "item_pic": "",
       "category": 1,
-      "price": 1,
-      "created_at": "2024-03-29",
-      "updated_at": "2024-03-29",
-      "is_published": true
+      "item_price": "150.00",
+      "created_date": "2024-05-02",
+      "last_edited_date": "2024-05-02"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "name": "Апельсины",
+      "description": "Сочные, 1 кг",
+      "item_pic": "",
+      "category": 1,
+      "item_price": "150.00",
+      "created_date": "2024-05-02",
+      "last_edited_date": "2024-05-02"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+      "name": "Помидоры",
+      "description": "Фламенко, 1 кг",
+      "item_pic": "",
+      "category": 2,
+      "item_price": "300.00",
+      "created_date": "2024-05-02",
+      "last_edited_date": "2024-05-02"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+      "name": "огурцы",
+      "description": "колючие короткоплодные, 2 кг",
+      "item_pic": "",
+      "category": 2,
+      "item_price": "200.00",
+      "created_date": "2024-05-02",
+      "last_edited_date": "2024-05-02"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 5,
+    "fields": {
+      "name": "вода",
+      "description": "газированая, 1 шт",
+      "item_pic": "",
+      "category": 3,
+      "item_price": "40.00",
+      "created_date": "2024-05-02",
+      "last_edited_date": "2024-05-03"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 6,
+    "fields": {
+      "name": "Сок",
+      "description": "Вишневый 1 шт",
+      "item_pic": "",
+      "category": 3,
+      "item_price": "150.00",
+      "created_date": "2024-05-02",
+      "last_edited_date": "2024-05-02"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 7,
+    "fields": {
+      "name": "Печенье",
+      "description": "Овсяное с изюмом, 1 уп",
+      "item_pic": "",
+      "category": 4,
+      "item_price": "100.00",
+      "created_date": "2024-05-02",
+      "last_edited_date": "2024-05-02"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 8,
+    "fields": {
+      "name": "зефир",
+      "description": "в шоколаде, 1 уп",
+      "item_pic": "",
+      "category": 4,
+      "item_price": "150.00",
+      "created_date": "2024-05-02",
+      "last_edited_date": "2024-05-03"
+    }
+  },
+  {
+    "model": "catalog.version",
+    "pk": 1,
+    "fields": {
+      "product": 1,
+      "number": 2,
+      "name": "Создана",
+      "is_active": true
+    }
+  },
+  {
+    "model": "catalog.version",
+    "pk": 2,
+    "fields": {
+      "product": 5,
+      "number": 2,
+      "name": "Создана",
+      "is_active": true
     }
   }
 ]
