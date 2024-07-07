@@ -1,4 +1,6 @@
 import random
+
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
@@ -11,7 +13,7 @@ from users.forms import UserRegisterForm, NewPasswordForm
 from users.models import User
 
 
-class RegisterView(CreateView):
+class RegisterView( CreateView):
     model = User
     form_class = UserRegisterForm
     success_url = reverse_lazy('users:login.html')

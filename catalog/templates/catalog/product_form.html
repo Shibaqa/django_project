@@ -1,3 +1,4 @@
+
 {% extends 'catalog/base.html'  %}
 {% block content %}
 <div class="col-12">
@@ -6,10 +7,10 @@
             <div class="card">
                 <div class="card-header">
                     {% if object %}
-                    Редактировать карточку продукта
-                    {% else %}
-                    Добавить карточку продукта
-                    {% endif %}
+                     Редактировать карточку продукта
+                 {% else %}
+                     Добавить карточку продукта
+                 {% endif %}
                 </div>
                 <div class="card-body">
                     {% csrf_token %}
@@ -17,17 +18,17 @@
                     {{ form.as_p }}
                     <button type="submit" class="btn btn-primary">
                         {% if object %}
-                        Сохранить
+                            Сохранить
                         {% else %}
-                        Добавить
+                            Добавить
                         {% endif %}
                     </button>
                 </div>
                 <div class="card-footer"></div>
             </div>
         </div>
-        <div class="col-6">
-            <div class="card">
+<div class="col-6">
+          <div class="card">
                 <div class="card-header">
                     <h5 class="card-title">
                         Версии продукта
@@ -36,7 +37,7 @@
                 <div class="card-body">
                     {{ formset.management_form }}
                     {% for form in formset.forms %}
-                    {{ form.as_p }}
+                        {{ form.as_p }}
                     {% endfor %}
                 </div>
                 <div class="card-footer"></div>

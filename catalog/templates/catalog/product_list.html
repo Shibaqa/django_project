@@ -3,7 +3,9 @@
 
 {% block content %}
 <div class="col-12 mb-5">
+    {% if perms.catalog_add_delete %}
     <a class="btn btn-outline-primary" href="{% url 'catalog:product_create' %}">Добавить продукт</a>
+    {% endif %}
 </div>
 {% for object in object_list %}
 <div class="col-md-4">
@@ -13,8 +15,13 @@
             <p class="card-text"> Актуальная версия {{ object.active_version }}.</p>
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                        <a href="{% url 'catalog:product_update' object.pk %}" class="btn btn-link">Изменить</a>
-                        <a href="{% url 'catalog:product_delete' object.pk%}" class="btn btn-danger">Удалить</a>
+                    <a href="{% url 'catalog:product_detail' object.pk %}" class="btn btn-secondary">Показать</a>
+                    {% if perms.catalog_change_delete %}
+                    <a href="{% url 'catalog:product_update' object.pk %}" class="btn btn-link">Изменить</a>
+                    {% endif %}
+                    {% if perms.catalog_product_delete %}
+                    <a href="{% url 'catalog:product_delete' object.pk%}" class="btn btn-danger">Удалить</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
