@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="col-12 mb-5">
-    {% if perms.catalog_add_delete %}
+    {% if perms.catalog_product_add %}
     <a class="btn btn-outline-primary" href="{% url 'catalog:product_create' %}">Добавить продукт</a>
     {% endif %}
 </div>
@@ -16,7 +16,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                     <a href="{% url 'catalog:product_detail' object.pk %}" class="btn btn-secondary">Показать</a>
-                    {% if perms.catalog_change_delete %}
+                    {% if perms.catalog_product_change %}
                     <a href="{% url 'catalog:product_update' object.pk %}" class="btn btn-link">Изменить</a>
                     {% endif %}
                     {% if perms.catalog_product_delete %}
