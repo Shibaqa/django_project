@@ -15,7 +15,9 @@
             <p class="card-text"> Актуальная версия {{ object.active_version }}.</p>
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
+                    {% if perms.catalog_product_view %}
                     <a href="{% url 'catalog:product_detail' object.pk %}" class="btn btn-secondary">Показать</a>
+                    {% endif %}
                     {% if perms.catalog_product_change %}
                     <a href="{% url 'catalog:product_update' object.pk %}" class="btn btn-link">Изменить</a>
                     {% endif %}

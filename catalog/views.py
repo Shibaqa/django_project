@@ -1,5 +1,9 @@
+from itertools import product
+
+from django.conf import settings
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.cache import cache
 from django.forms import inlineformset_factory
 from django.http import Http404
 from django.shortcuts import render
@@ -8,6 +12,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 
 from catalog.forms import ProductForm, VersionForm
 from catalog.models import Product, Contact, Version
+from catalog.services import get_cached_category_list
+from config.settings import CACHE_ENABLED
 
 
 class HomeView(LoginRequiredMixin, TemplateView):
@@ -97,27 +103,19 @@ class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
+    permission_required = 'catalog.view_product'
     template_name = 'catalog/product_detail.html'
     extra_context = {
         'title': 'Детальная информация о товаре'
     }
 
-    def __init__(self, **kwargs):
-        super().__init__(kwargs)
-        self.object = None
-
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        product_item = self.get_object()
-        context['blogpost_item'] = product_item
+        context['blogpost_item'] = get_cached_category_list()
         context['title'] = 'Детальная информация о товаре'
         return context
 
-    def get_object(self, queryset=None):
-        self.object = super().get_object(queryset)
-        self.object.number_of_views += 1
-        self.object.save()
-        return self.object
+
 
 
 class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
